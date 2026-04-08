@@ -1,5 +1,6 @@
 import streamlit as st
 import re
+import html
 from pipeline.retrieve import retrieve
 from pipeline.llm      import generate
 
@@ -330,7 +331,10 @@ with right:
 
             link_match = re.search(r'(https?://\S+)', body_lines)
             link_text  = link_match.group(0) if link_match else ""
+
             body_clean = body_lines.replace(link_text, "").strip(" \n-:")
+            body_clean = html.escape(body_clean)
+            title_line = html.escape(title_line)
 
             st.markdown(f"""
             <div class="scheme-card">
